@@ -1,7 +1,7 @@
 class CreateCustomCcEmailField < ActiveRecord::Migration
   def self.up
     c = CustomField.new(
-      :name => 'cc-email',
+      :name => 'Cc Emails',
       :editable => true,
       :field_format => 'string')
     c.type = 'IssueCustomField' # cannot be set by mass assignement!
@@ -12,7 +12,7 @@ class CreateCustomCcEmailField < ActiveRecord::Migration
   end
 
   def self.down
-    c = CustomField.find_by_name('cc-email')
+    c = CustomField.find_by_name('Cc Emails')
     execute "DELETE FROM custom_fields_trackers WHERE custom_field_id=#{c.id}"
     c.delete
   end

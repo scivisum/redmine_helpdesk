@@ -27,7 +27,7 @@ module RedmineHelpdesk
           custom_sender_value.save(:validate => false) # skip validation!
           
           cc_email = [@email.to_addrs, @email.cc_addrs, @email.bcc_addrs].flatten.compact.uniq.join(", ")
-          custom_cc_field = CustomField.find_by_name('cc-email')
+          custom_cc_field = CustomField.find_by_name('Cc Emails')
           custom_cc_value = CustomValue.find(
             :first,
             :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, custom_cc_field.id]
