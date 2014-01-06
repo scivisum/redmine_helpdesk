@@ -3,7 +3,7 @@ class HelpdeskHooks < Redmine::Hook::Listener
   # render partial for 'Send mail to supportclient'
   def view_issues_edit_notes_bottom(context={})
     i = Issue.find(context[:issue].id)
-    c = CustomField.find_by_name('owner-email')
+    c = CustomField.find_by_name('Email To')
     owner_email = i.custom_value_for(c).try(:value)
     return if owner_email.blank?
     action_view = ActionView::Base.new(File.dirname(__FILE__) + '/../app/views/')
@@ -20,7 +20,7 @@ class HelpdeskHooks < Redmine::Hook::Listener
   def view_issues_history_journal_bottom(context={})
     return unless context[:journal].send_to_owner == true
     i = Issue.find(context[:journal].journalized_id)
-    c = CustomField.find_by_name('owner-email')
+    c = CustomField.find_by_name('Email To')
     owner_email = i.custom_value_for(c).try(:value)
     return if owner_email.blank?
     action_view = ActionView::Base.new(File.dirname(__FILE__) + '/../app/views/')

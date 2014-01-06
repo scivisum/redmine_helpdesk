@@ -11,14 +11,14 @@ module RedmineHelpdesk
     module InstanceMethods
       private
       # Overrides the dispatch_to_default method to
-      # set the owner-email of a new issue created by
+      # set the Email To of a new issue created by
       # an email request
       def dispatch_to_default_with_helpdesk
         issue = receive_issue
-        # add owner-email only if the email is comming from an AnonymousUser
+        # add Email To only if the email is comming from an AnonymousUser
         if issue.author.class == AnonymousUser
           sender_email = @email.from.first
-          custom_sender_field = CustomField.find_by_name('owner-email')
+          custom_sender_field = CustomField.find_by_name('Email To')
           custom_sender_value = CustomValue.find(
             :first,
             :conditions => ["customized_id = ? AND custom_field_id = ?", issue.id, custom_sender_field.id]

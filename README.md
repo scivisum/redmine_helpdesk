@@ -1,6 +1,6 @@
 # Redmine Helpdesk
 
-Lightweight helpdesk plugin for redmine. Adds the email sender-address of an anonymous supportclient to the custom field 'owner-email' of a ticket which was created by a support email. Answers can be send to the supportclient by checking the support checkbox on a journal.
+Lightweight helpdesk plugin for redmine. Adds the email sender-address of an anonymous supportclient to the custom field 'Email To' of a ticket which was created by a support email. Answers can be send to the supportclient by checking the support checkbox on a journal. With added functionality that allows CC'ing of further emails.
 
 ## Features
 
@@ -45,7 +45,8 @@ Further information about plugin installation can be found at: http://www.redmin
 
 To use the helpdesk functionality you need to
 
-* add the custom field 'owner-email' to a project in the project configuration
+* add the custom field 'Email To' to a project in the project configuration
+* add the custom field 'CC Emails' to a project in the project configuration
 * add a standard first reply message into the custom_field 'helpdesk-first-reply' in the project configuration (optional)
 * add an email-footer into the custom_field 'helpdesk-email-footer' in the project configuration
 * add a sender email address into the custom_field 'helpdesk-sender-email' in the project configuration (optional)

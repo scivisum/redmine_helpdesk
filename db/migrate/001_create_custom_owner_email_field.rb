@@ -2,7 +2,7 @@ class CreateCustomOwnerEmailField < ActiveRecord::Migration
   def self.up
     add_column :journals, :send_to_owner, :boolean, :default => false
     c = CustomField.new(
-      :name => 'owner-email',
+      :name => 'Email To',
       :editable => true,
       :field_format => 'string')
     c.type = 'IssueCustomField' # cannot be set by mass assignement!
@@ -13,7 +13,7 @@ class CreateCustomOwnerEmailField < ActiveRecord::Migration
   end
 
   def self.down
-    c = CustomField.find_by_name('owner-email')
+    c = CustomField.find_by_name('Email To')
     execute "DELETE FROM custom_fields_trackers WHERE custom_field_id=#{c.id}"
     c.delete
     remove_column :journals, :send_to_owner
