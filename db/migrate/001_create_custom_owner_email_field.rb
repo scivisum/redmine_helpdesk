@@ -4,7 +4,8 @@ class CreateCustomOwnerEmailField < ActiveRecord::Migration
     c = CustomField.new(
       :name => 'Email To',
       :editable => true,
-      :field_format => 'string')
+      :field_format => 'string',
+      :default_value => '',)
     c.type = 'IssueCustomField' # cannot be set by mass assignement!
     c.save
     Tracker.all.each do |t|

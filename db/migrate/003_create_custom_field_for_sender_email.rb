@@ -4,7 +4,8 @@ class CreateCustomFieldForSenderEmail < ActiveRecord::Migration
       :name => 'helpdesk-sender-email',
       :editable => true,
       :visible => true,
-      :field_format => 'string')
+      :field_format => 'string',
+      :default_value => '',)
     c.type = 'ProjectCustomField' # cannot be set by mass assignement!
     c.save
   end

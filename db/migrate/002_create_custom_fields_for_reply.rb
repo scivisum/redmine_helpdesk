@@ -4,7 +4,8 @@ class CreateCustomFieldsForReply < ActiveRecord::Migration
       :name => 'helpdesk-first-reply',
       :editable => true,
       :visible => false,          # do not show it on the project summary page
-      :field_format => 'text')
+      :field_format => 'text',
+      :default_value => '',)
     c.type = 'ProjectCustomField' # cannot be set by mass assignement!
     c.save
     d = CustomField.new(
