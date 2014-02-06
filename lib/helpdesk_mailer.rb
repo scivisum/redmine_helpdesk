@@ -30,8 +30,39 @@ class HelpdeskMailer < ActionMailer::Base
     # available then use this one instead of the regular
     r = CustomField.find_by_name('helpdesk-first-reply')
     f = CustomField.find_by_name('helpdesk-email-footer')
-    reply  = p.nil? || r.nil? ? '' : p.custom_value_for(r).try(:value)
-    footer = p.nil? || f.nil? ? '' : p.custom_value_for(f).try(:value)
+    # Get automatic reply and footer from the current project, then parent etc
+    reply = ''
+    footer = ''
+    if p.present? && r.present?
+        pp = p
+        until pp.nil?
+            reply  = pp.custom_value_for(r).try(:value)
+            break if reply.present?
+            if pp.parent_id
+                pp = Project.find(pp.parent_id)
+            else
+                pp = nil
+            end
+        end
+    end
+    if p.present? && f.present?
+        pp = p
+        until pp.nil?
+            footer = pp.custom_value_for(f).try(:value)
+            break if footer.present?
+            if pp.parent_id
+                pp = Project.find(pp.parent_id)
+            else
+                pp = nil
+            end
+        end
+    end
+    # Get user email footer
+    if journal.present?
+        uf = CustomField.find_by_name('helpdesk-user-email-footer')
+        user_footer = journal.user.custom_value_for(uf).try(:value)
+        footer = user_footer.present? ? user_footer : footer
+    end
     # add any attachements
     if journal.present? && text.present?
       journal.details.each do |d|
@@ -50,7 +81,6 @@ class HelpdeskMailer < ActionMailer::Base
       # sending out the journal note to the support client
       @footer = footer.gsub("##issue-id##", issue.id.to_s)
       @text = text
-      @journal = journal
       mail(
         :from    => sender.present? && sender || Setting.mail_from,
         :to      => recipient,
@@ -69,7 +99,7 @@ class HelpdeskMailer < ActionMailer::Base
         :subject => subject,
         :date    => Time.zone.now
       )
-    else
+    elsif journal.present?
       # fallback to a regular notifications email with redmine view
       @issue = issue
       @journal = journal
@@ -83,6 +113,9 @@ class HelpdeskMailer < ActionMailer::Base
         :template_path => 'mailer',
         :template_name => 'issue_edit'
       )
+    else
+      # Will not send if new issue from incoming email and project & parent projects have no helpdesk-first-reply
+      Rails.logger.warn "Failed to send notification email to support client.  Check if helpdesk-first-reply defined on project '#{p.name}' or parent projects."
     end
     # return mail object to deliver it
     return mail

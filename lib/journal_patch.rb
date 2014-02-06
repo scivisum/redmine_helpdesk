@@ -21,8 +21,8 @@ module RedmineHelpdesk
           Mailer.deliver_issue_edit(self)
         end
         # sending email notifications to the supportclient
-        # only if the send_to_owner checkbox was checked
-        if send_to_owner == true
+        # only if the send_to_owner checkbox was checked & comment added
+        if send_to_owner == true and notes.present?
           issue = journalized.reload
           owner_email = issue.custom_value_for( CustomField.find_by_name('Email To') ).value
           cc_email = issue.custom_value_for( CustomField.find_by_name('Cc Emails') ).value
