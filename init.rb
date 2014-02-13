@@ -1,8 +1,17 @@
 require 'redmine'
 require 'helpdesk_hooks'
 require 'helpdesk_mailer'
-require 'journal_patch'
-require 'mail_handler_patch'
+require 'redmine_helpdesk/journal_patch'
+require 'redmine_helpdesk/mail_handler_patch'
+
+Rails.configuration.to_prepare do
+  unless MailHandler.included_modules.include? RedmineHelpdesk::MailHandlerPatch
+    MailHandler.send(:include, RedmineHelpdesk::MailHandlerPatch)
+  end
+  unless MailHandler.included_modules.include? RedmineHelpdesk::JournalPatch
+    Journal.send(:include, RedmineHelpdesk::JournalPatch)
+  end
+end
 
 Redmine::Plugin.register :redmine_helpdesk do
   name 'Redmine helpdesk plugin'

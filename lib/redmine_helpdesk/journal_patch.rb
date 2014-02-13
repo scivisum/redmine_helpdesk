@@ -33,6 +33,3 @@ module RedmineHelpdesk
     end # module InstanceMethods
   end # module JournalPatch
 end # module RedmineHelpdesk
-
-# Add module to Journal class
-Journal.send(:include, RedmineHelpdesk::JournalPatch)

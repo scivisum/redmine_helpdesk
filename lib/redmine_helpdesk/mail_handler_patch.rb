@@ -66,6 +66,3 @@ module RedmineHelpdesk
     end # module InstanceMethods
   end # module MailHandlerPatch
 end # module RedmineHelpdesk
-
-# Add module to MailHandler class
-MailHandler.send(:include, RedmineHelpdesk::MailHandlerPatch)
