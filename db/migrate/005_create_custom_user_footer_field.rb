@@ -3,7 +3,7 @@ class CreateCustomUserFooterField < ActiveRecord::Migration
     c = CustomField.new(
       :name => 'helpdesk-user-email-footer',
       :editable => true,
-      :field_format => 'string')
+      :field_format => 'text')
     c.type = 'UserCustomField' # cannot be set by mass assignement!
     c.save
   end
